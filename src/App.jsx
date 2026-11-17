@@ -9,12 +9,12 @@ function szyfruj(tekst, przesuniecie) {
 
   for (let i = 0; i < tekst.length; i++) {
     let znak = tekst[i];
-    let pozycja = alfabet.indexOf(znak.toUpperCase());
+    let pozycja = alfabet.indexOf(znak.toLowerCase());
 
     if (pozycja === -1) {
       wynik += znak;
     } else {
-      let nowaPozycja = (pozycja + Number(przesuniecie)) % 26;
+      let nowaPozycja = (pozycja + Number(przesuniecie)) % alfabet.length;
       wynik += alfabet[nowaPozycja];
     }
   }
@@ -52,6 +52,7 @@ function App() {
   const [tekst, setTekst] = useState("HELLO");
   const [przesuniecie, setPrzesuniecie] = useState("3");
   const [licznik, setLicznik] = useState(0);
+  const [zaszyfrujCalosc, setZaszyfrujCalosc] = useState(false);
 
   function zmienTekst(e) {
     setTekst(e.target.value.toUpperCase());
@@ -67,6 +68,12 @@ function App() {
     if (licznik < tekst.length) {
       setLicznik(licznik + 1);
     }
+  }
+
+  function zaszyfrujWszystko() {
+    setZaszyfrujCalosc(true);
+    setLicznik(tekst.length);
+    
   }
 
   let wynik = szyfruj(tekst, przesuniecie);
@@ -109,9 +116,15 @@ function App() {
         Następna litera
       </button>
 
+      <button onClick={() => zaszyfrujWszystko()}>
+        Zaszyfruj całość
+      </button>
+
       <h2>Zaszyfrowany tekst:</h2>
 
       <h3>{wynik.substring(0, licznik)}</h3>
+
+      
     </div>
   );
 }
