@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import "./App.css";
 
@@ -15,7 +14,7 @@ function szyfruj(tekst, przesuniecie) {
       wynik += znak;
     } else {
       let nowaPozycja = (pozycja + Number(przesuniecie)) % alfabet.length;
-      wynik += alfabet[nowaPozycja];
+      wynik += alfabet[nowaPozycja].toUpperCase();
     }
   }
 
@@ -24,7 +23,7 @@ function szyfruj(tekst, przesuniecie) {
 
 // Komponent jednego okienka
 function Okienko({ litera, aktywne }) {
-  let pozycja = alfabet.indexOf(litera);
+  let pozycja = alfabet.indexOf(litera.toLowerCase());
 
   if (pozycja === -1) {
     pozycja = 0;
@@ -73,7 +72,14 @@ function App() {
   function zaszyfrujWszystko() {
     setZaszyfrujCalosc(true);
     setLicznik(tekst.length);
-    
+
+  }
+
+  function resetuj() {
+    setTekst("HELLO");
+    setPrzesuniecie("3");
+    setLicznik(0);
+    setZaszyfrujCalosc(false);
   }
 
   let wynik = szyfruj(tekst, przesuniecie);
@@ -116,15 +122,19 @@ function App() {
         Następna litera
       </button>
 
-      <button onClick={() => zaszyfrujWszystko()}>
+      <button onClick={zaszyfrujWszystko}>
         Zaszyfruj całość
+      </button>
+
+      <button onClick={resetuj}>
+        Od nowa
       </button>
 
       <h2>Zaszyfrowany tekst:</h2>
 
       <h3>{wynik.substring(0, licznik)}</h3>
 
-      
+
     </div>
   );
 }
