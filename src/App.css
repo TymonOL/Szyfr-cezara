@@ -1,0 +1,40 @@
+
+body {
+  font-family: Arial;
+  text-align: center;
+}
+
+.okienka {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 30px;
+}
+
+.okienko {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border: 2px solid gray;
+  border-radius: 5px;
+}
+
+.aktywne {
+  border: 2px solid green;
+}
+
+.pasek {
+  transition: transform 0.5s;
+}
+
+.litera {
+  height: 40px;
+  line-height: 40px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+}

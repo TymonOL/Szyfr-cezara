@@ -1,7 +1,8 @@
 
 import { useState } from "react";
+import "./App.css";
 
-const alfabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const alfabet = "aąbcćdeęfghijklłmnńoóprsśtuwyzźż";
 
 function szyfruj(tekst, przesuniecie) {
   let wynik = "";
@@ -21,22 +22,54 @@ function szyfruj(tekst, przesuniecie) {
   return wynik;
 }
 
+// Komponent jednego okienka
+function Okienko({ litera, aktywne }) {
+  let pozycja = alfabet.indexOf(litera);
+
+  if (pozycja === -1) {
+    pozycja = 0;
+  }
+
+  return (
+    <div className={aktywne ? "okienko aktywne" : "okienko"}>
+      <div
+        className="pasek"
+        style={{
+          transform: `translateY(-${pozycja * 40}px)`
+        }}
+      >
+        {alfabet.split("").map((litera, index) => (
+          <div className="litera" key={index}>
+            {litera}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [tekst, setTekst] = useState("HELLO");
   const [przesuniecie, setPrzesuniecie] = useState("3");
-  const [wynik, setWynik] = useState("KHOOR");
+  const [licznik, setLicznik] = useState(0);
 
   function zmienTekst(e) {
-    setTekst(e.target.value);
+    setTekst(e.target.value.toUpperCase());
+    setLicznik(0);
   }
 
   function zmienPrzesuniecie(e) {
     setPrzesuniecie(e.target.value);
+    setLicznik(0);
   }
 
-  function szyfrujTekst() {
-    setWynik(szyfruj(tekst, przesuniecie));
+  function nastepnaLitera() {
+    if (licznik < tekst.length) {
+      setLicznik(licznik + 1);
+    }
   }
+
+  let wynik = szyfruj(tekst, przesuniecie);
 
   return (
     <div>
@@ -62,13 +95,23 @@ function App() {
 
       <br /><br />
 
-      <button onClick={szyfrujTekst}>
-        Szyfruj
+      <div className="okienka">
+        {tekst.split("").map((litera, index) => (
+          <Okienko
+            key={index}
+            litera={index < licznik ? wynik[index] : litera}
+            aktywne={index < licznik}
+          />
+        ))}
+      </div>
+
+      <button onClick={nastepnaLitera}>
+        Następna litera
       </button>
 
       <h2>Zaszyfrowany tekst:</h2>
 
-      <h3>{wynik}</h3>
+      <h3>{wynik.substring(0, licznik)}</h3>
     </div>
   );
 }
